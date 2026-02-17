@@ -1,9 +1,14 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
 from . import views
 
 app_name = 'scheduling'
 
 urlpatterns = [
+    # Ruta principal del dashboard y redirección
+    path('', RedirectView.as_view(url='dashboard/', permanent=False)),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+
     # Rutas para Servicios
     path('services/', views.ServiceListView.as_view(), name='service_list'),
     path('services/create/', views.ServiceCreateView.as_view(), name='service_create'),

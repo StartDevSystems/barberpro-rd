@@ -1,0 +1,134 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}Dashboard - BarberPro RD{% endblock %}
+
+{% block content %}
+<h1 class="h2 mb-4">Dashboard</h1>
+
+<!-- Tarjetas de Estadísticas -->
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-primary shadow">
+            <div class="card-body">
+                <h5 class="card-title">Ingresos de Hoy</h5>
+                <p class="card-text fs-2 fw-bold">${{ total_today|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-success shadow">
+            <div class="card-body">
+                <h5 class="card-title">Ingresos de la Semana</h5>
+                <p class="card-text fs-2 fw-bold">${{ total_week|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-info shadow">
+            <div class="card-body">
+                <h5 class="card-title">Ingresos del Mes</h5>
+                <p class="card-text fs-2 fw-bold">${{ total_month|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Gráfico de Ingresos -->
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow">
+            <div class="card-header">
+                Ingresos de los Últimos 7 Días
+            </div>
+            <div class="card-body">
+                <canvas id="incomeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranking de Clientes -->
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow">
+            <div class="card-header">
+                Top 5 Clientes por Gasto
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for client in client_ranking %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ client.name }}
+                            <span class="badge bg-primary rounded-pill">${{ client.total_spent|floatformat:2 }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No hay datos de clientes.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Próximas Citas -->
+<div class="card shadow">
+    <div class="card-header">
+        Próximas 5 Citas
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in upcoming_appointments %}
+                        <tr>
+                            <td>{{ appt.date|date:"d/m/Y" }}</td>
+                            <td>{{ appt.time|time:"H:i" }}</td>
+                            <td>{{ appt.client.name }}</td>
+                            <td>{{ appt.service.name }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No hay citas pendientes.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Script para Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('incomeChart');
+    const chartLabels = {{ chart_labels|safe }};
+    const chartData = {{ chart_data|safe }};
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Ingresos ($)',
+                data: chartData,
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

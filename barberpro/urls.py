@@ -16,8 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from scheduling import views as scheduling_views
 
 urlpatterns = [
+    path('', scheduling_views.PublicServiceListView.as_view(), name='public_home'),
+    path('book/service/<int:service_id>/', scheduling_views.BookingView.as_view(), name='public_booking'),
+    path('booking/confirmation/<int:pk>/', scheduling_views.BookingConfirmationView.as_view(), name='public_booking_confirmation'),
+    
+    # URL para la API de disponibilidad
+    path('api/available-slots/', scheduling_views.get_available_slots, name='api_available_slots'),
+
+    # Rutas del panel de admin interno
     path('admin/', admin.site.urls),
     path('app/', include('scheduling.urls', namespace='scheduling')),
 ]
