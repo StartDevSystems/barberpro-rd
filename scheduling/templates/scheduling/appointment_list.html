@@ -1,0 +1,56 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}Lista de Citas - BarberPro RD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Gestión de Citas</h1>
+    <a href="{% url 'scheduling:appointment_create' %}" class="btn btn-primary">Agendar Nueva Cita</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td>{{ appt.date|date:"d/m/Y" }}</td>
+                        <td>{{ appt.time|time:"H:i" }}</td>
+                        <td>{{ appt.client.name }}</td>
+                        <td>{{ appt.service.name }}</td>
+                        <td>${{ appt.total_price|floatformat:2 }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if appt.status == 'completed' %}bg-success
+                                {% elif appt.status == 'cancelled' %}bg-danger
+                                {% else %}bg-warning text-dark{% endif %}">
+                                {{ appt.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'scheduling:appointment_update' appt.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No hay citas registradas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

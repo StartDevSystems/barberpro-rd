@@ -1,0 +1,15 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}Confirmar Eliminación - BarberPro RD{% endblock %}
+
+{% block content %}
+<h1 class="h2 mb-4">Confirmar Eliminación</h1>
+<p>¿Estás seguro de que quieres eliminar al cliente <strong>"{{ object.name }}"</strong>?</p>
+<p class="text-danger">Esta acción no se puede deshacer y eliminará todas las citas asociadas a este cliente.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'scheduling:client_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

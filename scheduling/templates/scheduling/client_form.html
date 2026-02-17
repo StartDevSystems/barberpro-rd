@@ -1,0 +1,39 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}{% if object %}Editar Cliente{% else %}Crear Cliente{% endif %} - BarberPro RD{% endblock %}
+
+{% block content %}
+<h1 class="h2 mb-4">{% if object %}Editar Cliente{% else %}Crear Nuevo Cliente{% endif %}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Nombre Completo</label>
+                {{ form.name.errors }}
+                <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value|default_if_none:'' }}">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_phone" class="form-label">Teléfono</label>
+                    {{ form.phone.errors }}
+                    <input type="text" name="phone" id="id_phone" class="form-control" value="{{ form.phone.value|default_if_none:'' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_nickname" class="form-label">Apodo (Opcional)</label>
+                    {{ form.nickname.errors }}
+                    <input type="text" name="nickname" id="id_nickname" class="form-control" value="{{ form.nickname.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+                <a href="{% url 'scheduling:client_list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

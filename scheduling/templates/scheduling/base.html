@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}BarberPro RD{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            padding: 20px;
+            background-color: #343a40;
+            color: white;
+        }
+        .content {
+            margin-left: 300px;
+            padding: 20px;
+        }
+        .sidebar a {
+            color: #adb5bd;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            border-radius: .25rem;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #495057;
+            color: white;
+        }
+        .sidebar .nav-link {
+            font-size: 1.1em;
+        }
+        .sidebar .fs-4 {
+            border-bottom: 1px solid #495057;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar d-flex flex-column p-3">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">BarberPro RD</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <!-- Los enlaces a las secciones irán aquí -->
+            <a href="#" class="nav-link">Dashboard</a>
+        </li>
+        <li>
+            <a href="{% url 'scheduling:service_list' %}" class="nav-link">Servicios</a>
+        </li>
+        <li>
+            <a href="{% url 'scheduling:client_list' %}" class="nav-link">Clientes</a>
+        </li>
+        <li>
+            <a href="{% url 'scheduling:appointment_list' %}" class="nav-link">Citas</a>
+        </li>
+    </ul>
+    <hr>
+    <!-- User dropdown -->
+</div>
+
+<main class="content">
+    <div class="container-fluid">
+        {% block content %}
+        <h1>Bienvenido al Panel de Administración</h1>
+        <p>Selecciona una opción del menú para comenzar.</p>
+        {% endblock %}
+    </div>
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}{% if object %}Editar Servicio{% else %}Crear Servicio{% endif %} - BarberPro RD{% endblock %}
+
+{% block content %}
+<h1 class="h2 mb-4">{% if object %}Editar Servicio{% else %}Crear Nuevo Servicio{% endif %}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Nombre del Servicio</label>
+                {{ form.name.errors }}
+                <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value|default_if_none:'' }}">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_price" class="form-label">Precio ($)</label>
+                    {{ form.price.errors }}
+                    <input type="number" name="price" id="id_price" step="0.01" class="form-control" value="{{ form.price.value|default_if_none:'' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_duration_minutes" class="form-label">Duración (minutos)</label>
+                    {{ form.duration_minutes.errors }}
+                    <input type="number" name="duration_minutes" id="id_duration_minutes" class="form-control" value="{{ form.duration_minutes.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'scheduling:service_list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

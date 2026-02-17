@@ -1,0 +1,15 @@
+{% extends "scheduling/base.html" %}
+
+{% block title %}Confirmar Eliminación - BarberPro RD{% endblock %}
+
+{% block content %}
+<h1 class="h2 mb-4">Confirmar Eliminación</h1>
+<p>¿Estás seguro de que quieres eliminar el servicio <strong>"{{ object.name }}"</strong>?</p>
+<p class="text-danger">Esta acción no se puede deshacer.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'scheduling:service_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
